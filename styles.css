@@ -1,0 +1,284 @@
+:root {
+  --bg:        #0a0a0f;
+  --surface:   #12121a;
+  --border:    #2a2a3d;
+  --accent:    #00ffcc;
+  --accent2:   #ff3e6c;
+  --text:      #e8e8f0;
+  --muted:     #6b6b8a;
+  --glow:      0 0 20px rgba(0,255,204,0.4), 0 0 60px rgba(0,255,204,0.15);
+  --glow2:     0 0 20px rgba(255,62,108,0.4), 0 0 60px rgba(255,62,108,0.15);
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-body:  'Syne', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.18) 3px,
+    rgba(0,0,0,0.18) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* noise grain */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  gap: 2.5rem;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  animation: fadeDown 0.7s ease both;
+}
+
+.header__eyebrow {
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  color: var(--accent);
+  letter-spacing: 0.3em;
+  text-shadow: var(--glow);
+  margin-bottom: 1rem;
+}
+
+.header__title {
+  font-family: var(--font-pixel);
+  font-size: clamp(1rem, 4vw, 1.6rem);
+  line-height: 1.6;
+  color: var(--text);
+  text-shadow: 0 0 30px rgba(232,232,240,0.3);
+}
+
+.header__title span {
+  color: var(--accent);
+  text-shadow: var(--glow);
+}
+
+/* ── Button ── */
+.choose-btn {
+  position: relative;
+  font-family: var(--font-pixel);
+  font-size: clamp(0.6rem, 2.5vw, 0.85rem);
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+  padding: 1.1rem 2.5rem;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  box-shadow: var(--glow);
+  transition: transform 0.12s, box-shadow 0.12s;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+
+.choose-btn:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 0 35px rgba(0,255,204,0.7), 0 0 80px rgba(0,255,204,0.25);
+}
+
+.choose-btn:active {
+  transform: scale(0.97) translateY(1px);
+}
+
+.choose-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Result card ── */
+.result {
+  width: 100%;
+  max-width: 480px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  animation: revealCard 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  box-shadow: 0 8px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.result.visible {
+  display: flex;
+}
+
+.result__image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: #0d0d14;
+}
+
+.result__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(1.1) contrast(1.05);
+  transition: transform 0.6s ease;
+}
+
+.result__image:hover {
+  transform: scale(1.03);
+}
+
+.result__image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+  color: var(--muted);
+  background: repeating-linear-gradient(
+    45deg,
+    #0d0d14 0px, #0d0d14 10px,
+    #111118 10px, #111118 20px
+  );
+}
+
+.result__badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-family: var(--font-pixel);
+  font-size: 0.45rem;
+  color: var(--bg);
+  background: var(--accent2);
+  padding: 0.35rem 0.6rem;
+  letter-spacing: 0.05em;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  box-shadow: var(--glow2);
+}
+
+.result__body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.result__name {
+  font-family: var(--font-pixel);
+  font-size: clamp(0.65rem, 2.5vw, 0.85rem);
+  color: var(--accent);
+  text-shadow: var(--glow);
+  line-height: 1.6;
+}
+
+.result__desc {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.65;
+  opacity: 0.85;
+}
+
+.result__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-pixel);
+  font-size: 0.42rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+.result__footer::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  box-shadow: var(--glow);
+  animation: blink 1.2s step-start infinite;
+}
+
+/* ── Error state ── */
+.error-msg {
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+  color: var(--accent2);
+  text-shadow: var(--glow2);
+  text-align: center;
+  line-height: 2;
+  display: none;
+}
+.error-msg.visible { display: block; }
+
+/* ── Loading ── */
+.loading {
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+  color: var(--accent);
+  text-shadow: var(--glow);
+  letter-spacing: 0.2em;
+  display: none;
+}
+.loading.visible { display: block; animation: pulse 0.8s ease-in-out infinite alternate; }
+
+/* ── Animations ── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes revealCard {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes pulse {
+  from { opacity: 0.4; }
+  to   { opacity: 1; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .choose-btn { width: 100%; text-align: center; clip-path: none; }
+}

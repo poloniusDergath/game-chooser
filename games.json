@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Elden Ring",
+    "description": "An open-world action RPG set in the Lands Between. Prepare to suffer beautifully.",
+    "genre": "Action RPG",
+    "image": "images/elden-ring.jpg"
+  },
+  {
+    "name": "Hollow Knight",
+    "description": "A precise, haunting metroidvania deep beneath the surface of Hallownest.",
+    "genre": "Metroidvania",
+    "image": "images/hollow-knight.jpg"
+  },
+  {
+    "name": "Hades",
+    "description": "Slash your way out of the Underworld. Die. Try again. Love every minute.",
+    "genre": "Roguelite",
+    "image": "images/hades.jpg"
+  },
+  {
+    "name": "Disco Elysium",
+    "description": "A detective RPG unlike anything else. Think, drink, and accidentally save the world.",
+    "genre": "RPG",
+    "image": "images/disco-elysium.jpg"
+  },
+  {
+    "name": "Celeste",
+    "description": "Climb a mountain. Master each screen. A platformer about perseverance.",
+    "genre": "Platformer",
+    "image": "images/celeste.jpg"
+  }
+]
