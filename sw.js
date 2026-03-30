@@ -4,6 +4,7 @@ const PRECACHE = [
   '/',
   '/index.html',
   '/app.js',
+  '/styles.css',
   '/games.json',
   '/manifest.json',
 ];
