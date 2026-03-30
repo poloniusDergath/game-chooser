@@ -4,18 +4,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="manifest" href="manifest.json" /><!-- PNG fallback, works everywhere -->
+  <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" sizes="48x48" href="icons/icon-48x48.png" />
-  <!-- WEBP for modern browsers -->
   <link rel="icon" type="image/webp" sizes="48x48" href="icons/icon-48x48.webp" />
-  <!-- Apple Touch Icon (used when added to iOS home screen) -->
   <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png" />
   <link rel="icon" href="favicon.ico" sizes="32x32" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Syne:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
   <title>Game Chooser MK1</title>
 </head>
 
 <body>
-  <!-- your app content -->
+  <div class="app">
+
+    <header class="header">
+      <p class="header__eyebrow">INSERT COIN TO CONTINUE</p>
+      <h1 class="header__title">WHAT DO<br>YOU <span>PLAY</span><br>TONIGHT?</h1>
+    </header>
+
+    <button class="choose-btn" id="chooseButton">▶ CHOOSE FOR ME</button>
+
+    <p class="loading" id="loading">LOADING…</p>
+    <p class="error-msg" id="errorMessage"></p>
+
+    <div class="result" id="result">
+      <div class="result__image-wrap">
+        <img class="result__image" id="resultImg" src="" alt="" />
+        <div class="result__image-placeholder" id="resultImgPlaceholder" style="display:none">NO SCREENSHOT FOUND</div>
+        <span class="result__badge">TONIGHT'S PICK</span>
+      </div>
+      <div class="result__body">
+        <h2 class="result__name" id="resultName"></h2>
+        <p class="result__desc" id="resultDescription"></p>
+        <div class="result__footer" id="resultFooter"></div>
+      </div>
+    </div>
+
+  </div>
+
   <script src="app.js"></script>
 </body>
 
